@@ -1,89 +1,67 @@
-// Skills data categorized from Nikhila's resume
-
 export interface Skill {
   name: string;
-  level: number; // 1-100
-  icon?: string;
+  level?: number;
+  icon?: string; // devicon path ("docker/docker-original.svg") or local path starting with "/"
 }
 
 export interface SkillCategory {
   title: string;
   icon: string;
+  note?: string;
   skills: Skill[];
 }
 
 export const skillsData: SkillCategory[] = [
   {
-    title: "Programming Languages",
+    title: "Cloud",
+    icon: "☁️",
+    note: "EC2 · S3 · IAM · VPC · EKS · CloudFront · CodeDeploy",
+    skills: [{ name: "AWS", icon: "amazonwebservices/amazonwebservices-original-wordmark.svg" }]
+  },
+  {
+    title: "Containers & Orchestration",
+    icon: "🐳",
+    skills: [
+      { name: "Docker", icon: "docker/docker-original.svg" },
+      { name: "Kubernetes", icon: "kubernetes/kubernetes-original.svg" },
+      { name: "Helm", icon: "helm/helm-original.svg" },
+      { name: "Kustomize", icon: "/images/skills/kustomize.svg" }
+    ]
+  },
+  {
+    title: "Infrastructure as Code",
+    icon: "🏗️",
+    skills: [
+      { name: "Terraform", icon: "terraform/terraform-original.svg" },
+      { name: "Packer", icon: "packer/packer-original.svg" }
+    ]
+  },
+  {
+    title: "CI/CD & GitOps",
+    icon: "🔄",
+    skills: [
+      { name: "GitHub Actions", icon: "githubactions/githubactions-original.svg" },
+      { name: "ArgoCD", icon: "argocd/argocd-original.svg" }
+    ]
+  },
+  {
+    title: "Observability",
+    icon: "📊",
+    note: "Full Grafana LGTM stack: Loki · Grafana · Tempo · Mimir, plus Alloy",
+    skills: [
+      { name: "Prometheus", icon: "prometheus/prometheus-original.svg" },
+      { name: "Grafana", icon: "grafana/grafana-original.svg" },
+      { name: "Loki", icon: "/images/skills/loki.svg" },
+      { name: "Tempo", icon: "/images/skills/tempo.svg" },
+      { name: "OpenTelemetry", icon: "opentelemetry/opentelemetry-original.svg" }
+    ]
+  },
+  {
+    title: "Scripting",
     icon: "💻",
     skills: [
-      { name: "JavaScript", level: 90 },
-      { name: "TypeScript", level: 85 },
-      { name: "Python", level: 88 },
-      { name: "Java", level: 85 },
-      { name: "C++", level: 80 },
-      { name: "Dart", level: 75 },
-      { name: "Kotlin", level: 75 },
-      { name: "Solidity", level: 70 },
-      { name: "SQL", level: 85 }
-    ]
-  },
-  {
-    title: "Frontend Development",
-    icon: "🎨",
-    skills: [      { name: "React.js", level: 90 },
-      { name: "Next.js", level: 85 },
-      { name: "Tailwind CSS", level: 88 },
-      { name: "Three.js", level: 75 },
-      { name: "Android SDK", level: 80 }
-    ]
-  },
-  {
-    title: "Backend & Databases",
-    icon: "⚙️",
-    skills: [
-      { name: "Node.js", level: 88 },
-      { name: "Express.js", level: 85 },
-      { name: "Flask", level: 75 },
-      { name: "MongoDB", level: 85 },
-      { name: "Firebase", level: 90 }
-    ]
-  },
-  {
-    title: "Cloud & DevOps",
-    icon: "☁️",
-    skills: [
-      { name: "AWS", level: 85 },
-      { name: "Azure", level: 80 },
-      { name: "GCP", level: 78 },
-      { name: "Docker", level: 82 },
-      { name: "Kubernetes", level: 75 },
-      { name: "Jenkins", level: 70 }
-    ]
-  },  {
-    title: "ML & Data Science",
-    icon: "🤖",
-    skills: [
-      { name: "TensorFlow", level: 80 },
-      { name: "PyTorch", level: 78 },
-      { name: "Keras", level: 82 },
-      { name: "Pandas", level: 85 },
-      { name: "NumPy", level: 85 },
-      { name: "Scikit-learn", level: 80 },
-      { name: "OpenCV", level: 75 }
-    ]
-  },
-  {
-    title: "Blockchain & Web3",
-    icon: "🔗",
-    skills: [
-      { name: "Web3.js", level: 78 },
-      { name: "Ethers.js", level: 75 },
-      { name: "IPFS", level: 70 },
-      { name: "Ethereum", level: 75 },
-      { name: "Polygon", level: 72 },
-      { name: "Aptos", level: 68 },
-      { name: "Move", level: 65 }
+      { name: "Python", icon: "python/python-original.svg" },
+      { name: "Bash", icon: "bash/bash-original.svg" }
     ]
   }
 ];

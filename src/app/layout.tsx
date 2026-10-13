@@ -9,7 +9,6 @@ import { ThemeProvider } from "next-themes";
 import { ClientLayout } from "./client-layout";
 import { generateMetadata } from "./metadata";
 import { JsonLd } from "@/components/seo/json-ld";
-import { Analytics } from "@vercel/analytics/next";
 export const metadata = generateMetadata();
 
 const inter = Inter({
@@ -53,7 +52,6 @@ export default function RootLayout({
               <Footer />
             </div>
           </ClientLayout>
-          <Analytics />
         </ThemeProvider>
       </body>
     </html>

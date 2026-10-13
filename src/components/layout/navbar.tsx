@@ -16,6 +16,7 @@ export function Navbar() {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [mounted, setMounted] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -110,10 +111,10 @@ export function Navbar() {
         >
           <div className="flex items-center justify-between">
             {/* Logo with fixed width */}
-            <div className="w-[160px]">
+            <div className="min-w-0 md:w-[200px]">
               <Link 
                 href="/"
-                className="font-display text-xl font-bold transition-colors hover:text-primary"
+                className="font-display text-lg sm:text-xl font-bold whitespace-nowrap transition-colors hover:text-primary"
               >
                 <motion.span
                   initial={{ opacity: 0, x: -20 }}
@@ -121,7 +122,7 @@ export function Navbar() {
                   transition={{ duration: 0.5 }}
                   className="gradient-text"
                 >
-                  Nikhila Koneru
+                  Abdullah Sameh
                 </motion.span>
               </Link>
             </div>
@@ -155,7 +156,7 @@ export function Navbar() {
             </div>
             
             {/* Theme toggle - Right aligned with fixed width */}
-            <div className="w-[160px] flex justify-end items-center gap-2">
+            <div className="flex shrink-0 items-center justify-end gap-2 md:w-[200px]">
               <motion.div
                 initial={{ opacity: 0, scale: 0 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -171,7 +172,7 @@ export function Navbar() {
                 transition={{ delay: 0.5, type: "spring" }}
                 className="md:hidden" 
               >
-                <Sheet>
+                <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
                   <SheetTrigger asChild>
                     <Button variant="ghost" size="icon" className="rounded-full bg-muted/50">
                       <Menu className="h-6 w-6" />
@@ -183,9 +184,10 @@ export function Navbar() {
                       <div className="p-6 flex justify-between items-center">
                         <Link 
                           href="/"
+                          onClick={() => setMenuOpen(false)}
                           className="font-display text-2xl font-bold transition-colors hover:text-primary"
                         >
-                          <span className="gradient-text">Nikhila Koneru</span>
+                          <span className="gradient-text">Abdullah Sameh</span>
                         </Link>
                         <ThemeToggle />
                       </div>
@@ -200,6 +202,7 @@ export function Navbar() {
                             >
                               <Link
                                 href={item.href}
+                                onClick={() => setMenuOpen(false)}
                                 className={cn(
                                   "block py-3 px-4 text-lg font-medium rounded-md transition-colors",
                                   pathname === item.href

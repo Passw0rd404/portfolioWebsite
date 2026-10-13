@@ -1,26 +1,15 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Github, Linkedin, Mail } from "lucide-react";
+import { Briefcase, Github, Linkedin, Mail } from "lucide-react";
 import { SITE_CONFIG } from "@/lib/constants";
 
 export function FloatingSocials() {
   const socials = [
-    {
-      icon: <Github className="h-5 w-5" />,
-      href: SITE_CONFIG.links.github,
-      label: "GitHub",
-    },
-    {
-      icon: <Linkedin className="h-5 w-5" />,
-      href: SITE_CONFIG.links.linkedin,
-      label: "LinkedIn",
-    },
-    {
-      icon: <Mail className="h-5 w-5" />,
-      href: `mailto:${SITE_CONFIG.links.email}`,
-      label: "Email",
-    },
+    { icon: <Github className="h-5 w-5" />, href: SITE_CONFIG.links.github, label: "GitHub" },
+    { icon: <Linkedin className="h-5 w-5" />, href: SITE_CONFIG.links.linkedin, label: "LinkedIn" },
+    { icon: <Mail className="h-5 w-5" />, href: `mailto:${SITE_CONFIG.links.email}`, label: "Email" },
+    { icon: <Briefcase className="h-5 w-5" />, href: SITE_CONFIG.links.upwork, label: "Upwork" },
   ];
 
   return (
@@ -47,12 +36,11 @@ export function FloatingSocials() {
           {social.icon}
         </motion.a>
       ))}
-      
-      {/* Decorative line */}
+
       <motion.div
         initial={{ scaleY: 0 }}
         animate={{ scaleY: 1 }}
-        transition={{ delay: 1.5, duration: 0.5 }}
+        transition={{ delay: 1.6, duration: 0.5 }}
         className="w-px h-20 bg-border mx-auto mt-4"
         style={{ originY: 0 }}
       />

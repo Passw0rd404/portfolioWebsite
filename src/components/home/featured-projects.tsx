@@ -10,19 +10,20 @@ import {
   ScrollReveal, 
   StaggerContainer, 
   StaggerItem,
+  GradientText,
   MagneticButton 
 } from "@/components/animations";
 
 export function FeaturedProjects() {
   // Get featured projects - prioritizing blockchain and AI projects
   const featuredProjects = [
-    projects.find(p => p.id === "billrewards"),
-    projects.find(p => p.id === "cryptovault-ipfs"),
-    projects.find(p => p.id === "lightning-time")
+    projects.find(p => p.id === "mastodon-k8s"),
+    projects.find(p => p.id === "mern-aws"),
+    projects.find(p => p.id === "hivebox")
   ].filter(Boolean) as typeof projects;
 
   return (
-    <section className="py-20 bg-background">
+    <section className="py-20 bg-background glow divider-top">
       <div className="container mx-auto px-4">
         <ScrollReveal delay={0.2} width="100%">
           <motion.div
@@ -32,9 +33,9 @@ export function FeaturedProjects() {
             transition={{ duration: 0.5 }}
             className="text-center mb-12 w-full mx-auto"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Featured Projects</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Featured <GradientText>Projects</GradientText></h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              A selection of my recent work showcasing full-stack development and cloud computing
+              Production-style Kubernetes, AWS, and observability projects
             </p>
           </motion.div>
         </ScrollReveal>

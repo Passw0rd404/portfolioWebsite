@@ -3,17 +3,17 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { projects } from "@/data/projects";
+import { projects, type Category } from "@/data/projects";
 import { ANIMATION_VARIANTS } from "@/lib/constants";
-import { ExternalLink, Github, Smartphone, Globe, Link2, Brain } from "lucide-react";
+import { ExternalLink, Github, Cloud, Container, Brain, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { LavenderBadge } from "@/components/ui/lavender-badge";
 
 const categoryIcons: Record<string, React.ReactNode> = {
-  mobile: <Smartphone className="h-4 w-4" />,
-  web: <Globe className="h-4 w-4" />,
-  blockchain: <Link2 className="h-4 w-4" />,
+  devops: <Wrench className="h-4 w-4" />,
+  kubernetes: <Container className="h-4 w-4" />,
+  cloud: <Cloud className="h-4 w-4" />,
   ai: <Brain className="h-4 w-4" />,
 };
 
@@ -22,18 +22,18 @@ export function Projects() {
   
   const filteredProjects = selectedCategory === "all" 
     ? projects 
-    : projects.filter(project => project.category === selectedCategory);
+    : projects.filter(project => project.category.includes(selectedCategory as Category));
 
   const categories = [
     { value: "all", label: "All Projects" },
-    { value: "mobile", label: "Mobile" },
-    { value: "web", label: "Web" },
-    { value: "blockchain", label: "Blockchain" },
+    { value: "devops", label: "DevOps" },
+    { value: "kubernetes", label: "Kubernetes" },
+    { value: "cloud", label: "Cloud" },
     { value: "ai", label: "AI" },
   ];
 
   return (
-    <section className="py-20 px-4 bg-muted/30">
+    <section className="py-20 px-4 bg-muted/30 grid-bg glow">
       <div className="container mx-auto max-w-6xl">
         {/* Section Header */}
         <motion.div
@@ -47,8 +47,8 @@ export function Projects() {
             Featured <span className="gradient-text">Projects</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Showcasing innovative solutions from mobile apps to blockchain
-            implementations, each project demonstrates real-world impact.
+            Production-style Kubernetes platforms, AWS infrastructure as code, and
+            full observability stacks, built and documented in the open.
           </p>
         </motion.div>
 
@@ -110,7 +110,7 @@ export function Projects() {
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center">
                         <span className="text-6xl opacity-20">
-                          {categoryIcons[project.category as keyof typeof categoryIcons] || "💻"}
+                          {categoryIcons[project.category[0]] || "💻"}
                         </span>
                       </div>
                     )}
@@ -122,7 +122,7 @@ export function Projects() {
                         {project.title}
                       </h3>
                       <span className="text-2xl ml-2">
-                        {categoryIcons[project.category as keyof typeof categoryIcons]}
+                        {categoryIcons[project.category[0]]}
                       </span>
                     </div>
                   </CardHeader>

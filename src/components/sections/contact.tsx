@@ -1,266 +1,229 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import {
+  Briefcase, CheckCircle2, FileText, Github, Linkedin, Loader2, Mail, MapPin, Send,
+} from "lucide-react";
 import { ANIMATION_VARIANTS, SITE_CONFIG } from "@/lib/constants";
-import { Mail, Phone, Send, Loader2, CheckCircle, AlertCircle } from "lucide-react";
+import { GradientText } from "@/components/animations";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 
-// Form validation schema
-const contactSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Please enter a valid email address"),
-  subject: z.string().min(5, "Subject must be at least 5 characters"),
-  message: z.string().min(20, "Message must be at least 20 characters"),
-});
+type Status = "idle" | "sending" | "success" | "error";
 
-type ContactFormData = z.infer<typeof contactSchema>;
+const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
+const field =
+  "w-full rounded-md border bg-background px-3 py-2 text-base sm:text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/30";
+const chip = "rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs text-primary";
+const card =
+  "flex items-center gap-4 rounded-xl border bg-card p-4 transition-all hover:-translate-y-0.5 hover:border-primary/50 hover:shadow-md";
+
+const openTo = ["Internships", "Full-time", "Part-time", "Freelance", "Remote", "Hybrid", "On-site"];
+const roles = ["DevOps Engineer", "Cloud Engineer", "Site Reliability Engineer", "Platform Engineer"];
+
+const channels = [
+  { icon: Mail, label: "Email", value: SITE_CONFIG.links.email, href: `mailto:${SITE_CONFIG.links.email}` },
+  { icon: Linkedin, label: "LinkedIn", value: "abdullah-sameh", href: SITE_CONFIG.links.linkedin },
+  { icon: Github, label: "GitHub", value: "Passw0rd404", href: SITE_CONFIG.links.github },
+  { icon: Briefcase, label: "Upwork", value: "Hire me on Upwork", href: SITE_CONFIG.links.upwork },
+  { icon: FileText, label: "Resume", value: "Download my CV (PDF)", href: `${base}/final.pdf` },
+];
 
 export function Contact() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
+  const [status, setStatus] = useState<Status>("idle");
+  const configured = !SITE_CONFIG.formKey.startsWith("PASTE");
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<ContactFormData>({
-    resolver: zodResolver(contactSchema),
-  });
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    if (data.get("botcheck")) return;
 
-  const onSubmit = async (data: ContactFormData) => {
-    setIsSubmitting(true);
-    setSubmitStatus("idle");
+    const name = String(data.get("name"));
+    const email = String(data.get("email"));
+    const message = String(data.get("message"));
 
-    try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      
-      // In real implementation, you would send the email here
-      console.log("Form submitted:", data);
-      
-      setSubmitStatus("success");
-      reset();
-      
-      // Reset success message after 5 seconds
-      setTimeout(() => setSubmitStatus("idle"), 5000);
-    } catch {
-      setSubmitStatus("error");
-    } finally {
-      setIsSubmitting(false);
+    if (!configured) {
+      const body = encodeURIComponent(`${message}\n\n— ${name} (${email})`);
+      window.location.href = `mailto:${SITE_CONFIG.links.email}?subject=${encodeURIComponent(
+        `Portfolio message from ${name}`
+      )}&body=${body}`;
+      return;
     }
-  };
+
+    setStatus("sending");
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: SITE_CONFIG.formKey,
+          subject: `New portfolio message from ${name}`,
+          from_name: "Portfolio Contact Form",
+          name,
+          email,
+          message,
+        }),
+      });
+      const json = await res.json();
+      if (json.success) {
+        setStatus("success");
+        form.reset();
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
+  }
+
   return (
-    <section className="py-20 px-4">
+    <section className="py-20 px-4 grid-bg">
       <div className="container mx-auto max-w-5xl">
-        {/* Section Header */}
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
           variants={ANIMATION_VARIANTS.fadeUp}
-          className="text-center mb-12"
+          className="text-center mb-10"
         >
           <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">
-            Get In <span className="gradient-text">Touch</span>
+            Get In <GradientText>Touch</GradientText>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Have a project in mind or want to collaborate? Feel free to reach out!
-            I&apos;m always open to discussing new opportunities.
+            Looking for a DevOps engineer? Let&apos;s talk: internship, full-time, or freelance,
+            remote, hybrid, or on-site.
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12">
-          {/* Contact Info */}
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={ANIMATION_VARIANTS.fadeUp}
-            transition={{ delay: 0.2 }}
-            className="space-y-8"
-          >
-            <div>
-              <h3 className="text-2xl font-semibold mb-6">Let&apos;s Connect</h3>
-              <p className="text-muted-foreground mb-8">
-                I&apos;m currently pursuing my Master&apos;s at Northeastern University and
-                actively seeking opportunities in cloud computing, full-stack development,
-                and emerging technologies.
-              </p>
-            </div>
-            {/* Contact Cards */}
-            <div className="space-y-4">
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                className="flex items-center gap-4 p-4 rounded-lg border bg-card"
+        {/* Availability */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mb-10 rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/10 via-transparent to-lavender/10 p-6 text-center"
+        >
+          <p className="mb-4 flex items-center justify-center gap-2 font-semibold">
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500 opacity-75" />
+              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-500" />
+            </span>
+            Open to new opportunities
+          </p>
+          <div className="mb-3 flex flex-wrap justify-center gap-2">
+            {openTo.map((t) => (
+              <span key={t} className={chip}>{t}</span>
+            ))}
+          </div>
+          <p className="mb-2 text-xs uppercase tracking-wider text-muted-foreground">Roles I&apos;m looking for</p>
+          <div className="flex flex-wrap justify-center gap-2">
+            {roles.map((r) => (
+              <span key={r} className="rounded-full border px-3 py-1 text-xs text-muted-foreground">{r}</span>
+            ))}
+          </div>
+        </motion.div>
+
+        <div className="grid gap-8 lg:grid-cols-5">
+          <div className="space-y-4 lg:col-span-2">
+            {channels.map((c, i) => (
+              <motion.a
+                key={c.label}
+                href={c.href}
+                target={c.href.startsWith("mailto:") ? undefined : "_blank"}
+                rel="noopener noreferrer"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+                className={card}
               >
-                <div className="p-3 rounded-full bg-primary/10 text-primary">
-                  <Mail className="h-5 w-5" />
+                <div className="rounded-full bg-primary/10 p-3 text-primary">
+                  <c.icon className="h-5 w-5" />
                 </div>
-                <div>
-                  <p className="font-medium">Email</p>
-                  <a
-                    href={`mailto:${SITE_CONFIG.links.email}`}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {SITE_CONFIG.links.email}
-                  </a>
+                <div className="min-w-0">
+                  <p className="text-sm text-muted-foreground">{c.label}</p>
+                  <p className="truncate font-medium">{c.value}</p>
                 </div>
-              </motion.div>
+              </motion.a>
+            ))}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: channels.length * 0.08 }}
+              className={card}
+            >
+              <div className="rounded-full bg-primary/10 p-3 text-primary">
+                <MapPin className="h-5 w-5" />
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Based in</p>
+                <p className="font-medium">Cairo, Egypt</p>
+              </div>
+            </motion.div>
+          </div>
 
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                className="flex items-center gap-4 p-4 rounded-lg border bg-card"
-              >
-                <div className="p-3 rounded-full bg-primary/10 text-primary">
-                  <Phone className="h-5 w-5" />
+          <Card className="lg:col-span-3">
+            <CardContent className="p-6 md:p-8">
+              {status === "success" ? (
+                <div className="flex flex-col items-center py-10 text-center">
+                  <CheckCircle2 className="mb-4 h-12 w-12 text-green-500" />
+                  <h3 className="mb-2 text-xl font-semibold">Message sent!</h3>
+                  <p className="mb-6 text-muted-foreground">
+                    Thanks for reaching out. I&apos;ll get back to you soon.
+                  </p>
+                  <Button variant="outline" onClick={() => setStatus("idle")}>
+                    Send another message
+                  </Button>
                 </div>
-                <div>
-                  <p className="font-medium">Phone</p>
-                  <a
-                    href={`tel:${SITE_CONFIG.links.phone}`}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {SITE_CONFIG.links.phone}
-                  </a>
-                </div>
-              </motion.div>
-            </div>
-
-            {/* Availability Status */}
-            <div className="p-6 rounded-xl bg-primary/5 border border-primary/20">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="h-3 w-3 bg-green-500 rounded-full animate-pulse" />
-                <span className="font-medium">Available for opportunities</span>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Expected graduation: May 2027 • Open to internships and full-time roles
-              </p>
-            </div>
-          </motion.div>
-          {/* Contact Form */}
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={ANIMATION_VARIANTS.fadeUp}
-            transition={{ delay: 0.3 }}
-          >
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              {/* Name Field */}
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium mb-2">
-                  Name
-                </label>
-                <input
-                  {...register("name")}
-                  type="text"
-                  id="name"
-                  className="w-full px-4 py-2 rounded-lg border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                  placeholder="Your name"
-                />
-                {errors.name && (
-                  <p className="mt-1 text-sm text-destructive">{errors.name.message}</p>
-                )}
-              </div>
-
-              {/* Email Field */}
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium mb-2">
-                  Email
-                </label>
-                <input
-                  {...register("email")}
-                  type="email"
-                  id="email"
-                  className="w-full px-4 py-2 rounded-lg border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                  placeholder="your.email@example.com"
-                />
-                {errors.email && (
-                  <p className="mt-1 text-sm text-destructive">{errors.email.message}</p>
-                )}
-              </div>
-              {/* Subject Field */}
-              <div>
-                <label htmlFor="subject" className="block text-sm font-medium mb-2">
-                  Subject
-                </label>
-                <input
-                  {...register("subject")}
-                  type="text"
-                  id="subject"
-                  className="w-full px-4 py-2 rounded-lg border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                  placeholder="What's this about?"
-                />
-                {errors.subject && (
-                  <p className="mt-1 text-sm text-destructive">{errors.subject.message}</p>
-                )}
-              </div>
-
-              {/* Message Field */}
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium mb-2">
-                  Message
-                </label>
-                <textarea
-                  {...register("message")}
-                  id="message"
-                  rows={5}
-                  className="w-full px-4 py-2 rounded-lg border bg-background focus:outline-none focus:ring-2 focus:ring-primary resize-none"
-                  placeholder="Tell me about your project or idea..."
-                />
-                {errors.message && (
-                  <p className="mt-1 text-sm text-destructive">{errors.message.message}</p>
-                )}
-              </div>
-
-              {/* Submit Button */}
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full"
-                size="lg"
-              >
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Sending...
-                  </>
-                ) : (
-                  <>
-                    <Send className="mr-2 h-4 w-4" />
-                    Send Message
-                  </>
-                )}
-              </Button>
-              {/* Status Messages */}
-              {submitStatus === "success" && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="flex items-center gap-2 p-4 rounded-lg bg-green-500/10 text-green-600"
-                >
-                  <CheckCircle className="h-5 w-5" />
-                  <p>Message sent successfully! I&apos;ll get back to you soon.</p>
-                </motion.div>
+              ) : (
+                <form onSubmit={onSubmit} className="space-y-5">
+                  <h3 className="text-xl font-semibold">Send me a message</h3>
+                  <input type="checkbox" name="botcheck" className="hidden" tabIndex={-1} autoComplete="off" />
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    <div className="space-y-2">
+                      <label htmlFor="name" className="text-sm font-medium">Name</label>
+                      <input id="name" name="name" required className={field} placeholder="Your name" />
+                    </div>
+                    <div className="space-y-2">
+                      <label htmlFor="email" className="text-sm font-medium">Email</label>
+                      <input id="email" name="email" type="email" required className={field} placeholder="you@example.com" />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <label htmlFor="message" className="text-sm font-medium">Message</label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      required
+                      rows={6}
+                      className={`${field} resize-none`}
+                      placeholder="Tell me about the role or project..."
+                    />
+                  </div>
+                  {status === "error" && (
+                    <p className="text-sm text-destructive">
+                      Something went wrong. Please email me directly at{" "}
+                      <a className="underline" href={`mailto:${SITE_CONFIG.links.email}`}>
+                        {SITE_CONFIG.links.email}
+                      </a>
+                      .
+                    </p>
+                  )}
+                  <Button type="submit" size="lg" className="w-full" disabled={status === "sending"}>
+                    {status === "sending" ? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                      <Send className="mr-2 h-4 w-4" />
+                    )}
+                    {status === "sending" ? "Sending..." : "Send Message"}
+                  </Button>
+                </form>
               )}
-
-              {submitStatus === "error" && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="flex items-center gap-2 p-4 rounded-lg bg-destructive/10 text-destructive"
-                >
-                  <AlertCircle className="h-5 w-5" />
-                  <p>Something went wrong. Please try again later.</p>
-                </motion.div>
-              )}
-            </form>
-          </motion.div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </section>

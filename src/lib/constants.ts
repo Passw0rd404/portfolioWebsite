@@ -1,15 +1,15 @@
-// App constants
-
 export const SITE_CONFIG = {
-  name: "Nikhila Koneru",
-  description: "Master's in Computer Science student at Northeastern University | Full-stack Developer | Cloud Computing Enthusiast",
-  url: "https://nikhilakoneru.com",
-  ogImage: "/images/nikhila/og-image.png",
+  name: "Abdullah Sameh",
+  title: "DevOps Engineer",
+  description: "DevOps Engineer focused on Kubernetes, GitOps, and Cloud Automation. Open to internships, full-time, and freelance roles.",
+  url: "https://abdullahsameh.tech",
+  ogImage: "/images/og-image.png",
+  formKey: "7cf01b40-af05-46f6-a7d6-0ae4f82d5151",
   links: {
-    email: "nikhila.koneru1@gmail.com",
-    github: "https://github.com/Nikhilakoneru",
-    linkedin: "https://linkedin.com/in/nikhila-koneru",
-    phone: "+1 2073320512"
+    email: "abdullah.sameh40404@gmail.com",
+    github: "https://github.com/Passw0rd404",
+    linkedin: "https://linkedin.com/in/abdullah-sameh-0a3063366",
+    upwork: "https://www.upwork.com/freelancers/~014674126340988e86"
   }
 };
 
@@ -23,20 +23,8 @@ export const NAV_ITEMS = [
 ];
 
 export const ANIMATION_VARIANTS = {
-  fadeUp: {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
-  },
-  fadeDown: {
-    hidden: { opacity: 0, y: -20 },
-    visible: { opacity: 1, y: 0 }
-  },
-  fadeIn: {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1 }
-  },
-  scaleIn: {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: { opacity: 1, scale: 1 }
-  }
+  fadeUp: { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } },
+  fadeDown: { hidden: { opacity: 0, y: -20 }, visible: { opacity: 1, y: 0 } },
+  fadeIn: { hidden: { opacity: 0 }, visible: { opacity: 1 } },
+  scaleIn: { hidden: { opacity: 0, scale: 0.8 }, visible: { opacity: 1, scale: 1 } }
 };

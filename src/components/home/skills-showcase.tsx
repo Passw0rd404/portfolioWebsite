@@ -1,23 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { skillsData } from "@/data/skills";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { TiltCard, MagneticButton } from "@/components/animations";
+import { GradientText } from "@/components/animations";
+import { SkillsGrid } from "@/components/common/skills-grid";
 
 export function SkillsShowcase() {
-  // Get top skills from first 3 categories for homepage display
-  const showcaseSkills = skillsData.slice(0, 3).map(category => ({
-    ...category,
-    skills: category.skills.slice(0, 4)
-  }));
-
   return (
-    <section className="py-20 bg-muted/50">
+    <section className="py-20 bg-muted/50 grid-bg glow divider-top">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -26,84 +15,19 @@ export function SkillsShowcase() {
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Technical Skills</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Technical <GradientText>Skills</GradientText>
+          </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Proficient in modern web technologies and cloud computing platforms
+            Cloud-native tooling for infrastructure, delivery, and observability
           </p>
         </motion.div>
 
-        <div className="grid gap-6 md:grid-cols-3 mb-12 max-w-6xl mx-auto">
-          {showcaseSkills.map((category, categoryIndex) => (
-            <motion.div
-              key={category.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: categoryIndex * 0.1 }}
-            >
-              <TiltCard className="h-full">
-                <Card className="h-full hover:shadow-lg transition-all duration-300 border-border/50 hover:border-lavender/50">
-                  <CardHeader className="pb-3">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className="text-2xl">{category.icon}</span>
-                        <CardTitle className="text-lg">{category.title}</CardTitle>
-                      </div>
-                      <Badge variant="outline" className="text-xs border-lavender/50 badge-lavender-outline">
-                        {category.skills.length}+
-                      </Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      {category.skills.map((skill) => (
-                        <div key={skill.name} className="space-y-1.5">
-                          <div className="flex justify-between items-center text-sm">
-                            <span className="font-medium">{skill.name}</span>
-                            <span className="text-xs text-muted-foreground">{skill.level}%</span>
-                          </div>
-                          <div className="h-2 bg-muted rounded-full overflow-hidden">
-                            <motion.div
-                              className="h-full bg-gradient-to-r from-lavender to-teal rounded-full"
-                              initial={{ width: 0 }}
-                              whileInView={{ width: `${skill.level}%` }}
-                              viewport={{ once: true }}
-                              transition={{
-                                duration: 1,
-                                delay: categoryIndex * 0.1 + 0.1,
-                                ease: "easeOut"
-                              }}
-                            />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </TiltCard>
-            </motion.div>
-          ))}
-        </div>
+        <SkillsGrid />
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="text-center"
-        >
-          <p className="text-muted-foreground mb-6">
-            Also proficient in Git, REST APIs, GraphQL, Agile methodologies, and more
-          </p>
-          <MagneticButton>
-            <Link href="/skills">
-              <Button variant="outline" size="lg" className="group">
-                View All Skills
-                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </Link>
-          </MagneticButton>
-        </motion.div>
+        <p className="text-center text-muted-foreground mt-12">
+          Currently deepening advanced Kubernetes patterns and cloud-native security
+        </p>
       </div>
     </section>
   );
