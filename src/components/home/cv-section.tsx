@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -82,8 +83,8 @@ const CV_HTML = `
       <li>Building a Kubernetes deployment for a live federated social media platform (<strong>Mastodon</strong>), designed to run on <strong>any online/cloud cluster</strong> — AWS, Civo, or otherwise — with <strong>autoscaling</strong> across web, streaming, and Sidekiq, plus a companion <strong>fediscoverer</strong> service that scales the same way.</li>
       <li>Self-hosted, highly-available data layer: <strong>PostgreSQL via CloudNativePG</strong> (primary + replica), <strong>Redis via DandyDeveloper's redis-ha chart</strong> (Sentinel + HAProxy) for cache and Sidekiq queues, and <strong>Elasticsearch via ECK</strong> — no managed DB, cache, or search service dependency.</li>
       <li>Storage relies on whatever CSI the target cluster provides, and ingress is handled by <strong>Traefik</strong> — keeping the entire repo portable across cloud providers rather than tied to any one vendor's tooling.</li>
-      <li>Cost-optimized node architecture: stateless app tier on <strong>Spot instances</strong>; stateful data services (PostgreSQL, Redis, Elasticsearch, MinIO) on <strong>On-Demand nodes</strong>.</li>
-      <li>Full observability via a self-hosted <strong>LGTM stack</strong> (Grafana, Loki, Tempo, Mimir/Prometheus) running on the cluster itself, plus a basic <strong>ChatOps</strong> setup for day-to-day operational tasks and alerts.</li>
+      <li>Cost-optimized node architecture: stateless app tier on <strong>Spot instances</strong>; stateful data services (PostgreSQL, Redis, and Elasticsearch) on <strong>On-Demand nodes</strong>.</li>
+      <li>Full observability via a self-hosted <strong>LGTM stack</strong> (Grafana, Loki, Tempo, Mimir/Prometheus) running on the cluster, using <strong>Cloudflare R2</strong> for object storage for Mastodon media and LGTM monitoring data, plus a basic <strong>ChatOps</strong> setup for day-to-day operational tasks and alerts.</li>
       <li>Two independent CI/CD pipelines via <strong>GitHub Actions</strong> — one for the app, one for infrastructure — both synced through <strong>ArgoCD</strong> GitOps, with TLS via cert-manager and secrets via Sealed Secrets.</li>
     </ul>
   </div>
@@ -231,3 +232,4 @@ export function CvSection() {
     </section>
   );
 }
+
