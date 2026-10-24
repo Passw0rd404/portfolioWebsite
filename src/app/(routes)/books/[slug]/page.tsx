@@ -72,7 +72,7 @@ export default async function BookPage({ params }: Props) {
 
           {book.cover && (
             <div className="relative aspect-[2/3] w-full max-w-xs mx-auto mb-10 overflow-hidden rounded-xl border border-border/50">
-              <Image src={book.cover} alt={book.title} fill className="object-contain" sizes="320px" priority />
+              <Image src={book.cover} alt={book.title} fill className="object-cover" sizes="320px" priority />
             </div>
           )}
 

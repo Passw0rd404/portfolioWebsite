@@ -53,22 +53,20 @@ export function BooksSection({ books }: { books: BookMeta[] }) {
               <Link href={`/books/${book.slug}`} className="block h-full">
                 <Card className="group h-full flex flex-row gap-0 overflow-hidden hover:shadow-xl transition-all duration-300 border-border/50 hover:border-primary/50">
                   {/* Cover (left) */}
-                  <div className="w-32 sm:w-40 shrink-0 bg-gradient-to-br from-primary/10 via-accent/10 to-primary/10">
-                    <div className="relative aspect-[2/3] w-full overflow-hidden">
-                      {book.cover ? (
-                        <Image
-                          src={book.cover}
-                          alt={book.title}
-                          fill
-                          className="object-contain transition-transform duration-300 group-hover:scale-105"
-                          sizes="(max-width: 640px) 128px, 160px"
-                        />
-                      ) : (
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="text-5xl opacity-20">📚</span>
-                        </div>
-                      )}
-                    </div>
+                  <div className="relative w-32 sm:w-40 shrink-0 min-h-[12rem] sm:min-h-[15rem] overflow-hidden bg-gradient-to-br from-primary/10 via-accent/10 to-primary/10">
+                    {book.cover ? (
+                      <Image
+                        src={book.cover}
+                        alt={book.title}
+                        fill
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                        sizes="(max-width: 640px) 128px, 160px"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="text-5xl opacity-20">📚</span>
+                      </div>
+                    )}
                   </div>
 
                   {/* Details (right) */}
