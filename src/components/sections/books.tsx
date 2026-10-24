@@ -53,14 +53,14 @@ export function BooksSection({ books }: { books: BookMeta[] }) {
               <Link href={`/books/${book.slug}`} className="block h-full">
                 <Card className="group h-full flex flex-row gap-0 overflow-hidden hover:shadow-xl transition-all duration-300 border-border/50 hover:border-primary/50">
                   {/* Cover (left) */}
-                  <div className="relative w-28 sm:w-40 shrink-0 min-h-[10.5rem] sm:min-h-[15rem] overflow-hidden bg-gradient-to-br from-primary/10 via-accent/10 to-primary/10">
+                  <div className="relative w-32 sm:w-40 shrink-0 min-h-[12rem] sm:min-h-[15rem] overflow-hidden bg-gradient-to-br from-primary/10 via-accent/10 to-primary/10">
                     {book.cover ? (
                       <Image
                         src={book.cover}
                         alt={book.title}
                         fill
                         className="object-cover transition-transform duration-300 group-hover:scale-105"
-                        sizes="(max-width: 640px) 112px, 160px"
+                        sizes="(max-width: 640px) 128px, 160px"
                       />
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center">
@@ -71,7 +71,7 @@ export function BooksSection({ books }: { books: BookMeta[] }) {
 
                   {/* Details (right) */}
                   <div className="flex flex-col flex-1 min-w-0 p-4 sm:p-5">
-                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground mb-2">
+                    <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[11px] sm:text-xs text-muted-foreground mb-2">
                       <span className="flex items-center gap-1">
                         <Calendar className="h-3.5 w-3.5" />
                         {new Date(book.date).toLocaleDateString("en-US", {
@@ -93,7 +93,7 @@ export function BooksSection({ books }: { books: BookMeta[] }) {
                       )}
                     </div>
 
-                    <h3 className="text-lg sm:text-xl font-bold line-clamp-2 group-hover:text-primary transition-colors">
+                    <h3 className="text-base sm:text-xl font-bold line-clamp-2 break-words group-hover:text-primary transition-colors">
                       {book.title}
                     </h3>
                     {book.author && (

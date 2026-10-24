@@ -37,7 +37,7 @@ export default async function BookPage({ params }: Props) {
             All books
           </Link>
 
-          <h1 className="text-4xl md:text-5xl font-display font-bold mb-2">{book.title}</h1>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-2 break-words">{book.title}</h1>
           {book.author && (
             <p className="text-lg text-muted-foreground mb-4">by {book.author}</p>
           )}
@@ -77,7 +77,7 @@ export default async function BookPage({ params }: Props) {
           )}
 
           <article
-            className="prose prose-lg dark:prose-invert max-w-none
+            className="prose prose-base md:prose-lg dark:prose-invert max-w-none break-words
               prose-headings:font-display
               prose-a:text-primary
               prose-img:rounded-xl
