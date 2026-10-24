@@ -3,6 +3,7 @@ title: "Practical Monitoring"
 author: "Mike Julian"
 date: "2026-10-24"
 summary: "My chapter-by-chapter notes on Practical Monitoring by Mike Julian, from anti-patterns and statistics to application, server, network and security monitoring, plus my honest review."
+cover: "/images/books/practical-monitoring.png"
 tags: ["Monitoring", "DevOps", "Observability", "Alerting"]
 rating: 4
 published: true
