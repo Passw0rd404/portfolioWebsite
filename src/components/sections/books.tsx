@@ -7,11 +7,11 @@ import { motion } from "framer-motion";
 import { Calendar, Clock, ArrowRight, ChevronDown, Star } from "lucide-react";
 import { ANIMATION_VARIANTS } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { LavenderBadge } from "@/components/ui/lavender-badge";
 import type { BookMeta } from "@/data/books";
 
-const PAGE_SIZE = 8;
+const PAGE_SIZE = 6;
 
 export function BooksSection({ books }: { books: BookMeta[] }) {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
@@ -40,7 +40,7 @@ export function BooksSection({ books }: { books: BookMeta[] }) {
           <p className="text-center text-muted-foreground">No books yet. Stay tuned!</p>
         )}
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {visibleBooks.map((book, index) => (
             <motion.div
               key={book.slug}
@@ -48,27 +48,29 @@ export function BooksSection({ books }: { books: BookMeta[] }) {
               whileInView="visible"
               viewport={{ once: true }}
               variants={ANIMATION_VARIANTS.fadeUp}
-              transition={{ delay: (index % PAGE_SIZE) * 0.1 }}
+              transition={{ delay: (index % 2) * 0.1 }}
             >
               <Link href={`/books/${book.slug}`} className="block h-full">
-                <Card className="group h-full flex flex-col overflow-hidden hover:shadow-xl transition-all duration-300 border-border/50 hover:border-primary/50">
-                  <div className="relative aspect-[2/3] overflow-hidden bg-gradient-to-br from-primary/10 via-accent/10 to-primary/10">
+                <Card className="group h-full flex flex-row gap-0 overflow-hidden hover:shadow-xl transition-all duration-300 border-border/50 hover:border-primary/50">
+                  {/* Cover (left) */}
+                  <div className="relative w-28 sm:w-40 shrink-0 min-h-[10.5rem] sm:min-h-[15rem] overflow-hidden bg-gradient-to-br from-primary/10 via-accent/10 to-primary/10">
                     {book.cover ? (
                       <Image
                         src={book.cover}
                         alt={book.title}
                         fill
                         className="object-cover transition-transform duration-300 group-hover:scale-105"
-                        sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                        sizes="(max-width: 640px) 112px, 160px"
                       />
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="text-6xl opacity-20">📚</span>
+                        <span className="text-5xl opacity-20">📚</span>
                       </div>
                     )}
                   </div>
 
-                  <CardHeader className="pb-3">
+                  {/* Details (right) */}
+                  <div className="flex flex-col flex-1 min-w-0 p-4 sm:p-5">
                     <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground mb-2">
                       <span className="flex items-center gap-1">
                         <Calendar className="h-3.5 w-3.5" />
@@ -90,30 +92,29 @@ export function BooksSection({ books }: { books: BookMeta[] }) {
                         </span>
                       )}
                     </div>
-                    <h3 className="text-base md:text-lg font-bold line-clamp-2 group-hover:text-primary transition-colors">
+
+                    <h3 className="text-lg sm:text-xl font-bold line-clamp-2 group-hover:text-primary transition-colors">
                       {book.title}
                     </h3>
                     {book.author && (
-                      <p className="text-sm text-muted-foreground">by {book.author}</p>
+                      <p className="text-sm text-muted-foreground mb-2">by {book.author}</p>
                     )}
-                  </CardHeader>
 
-                  <CardContent className="flex-grow flex flex-col">
-                    <p className="text-muted-foreground mb-4 text-sm leading-relaxed line-clamp-3">
+                    <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2 sm:line-clamp-3 mb-3">
                       {book.summary}
                     </p>
 
-                    <div className="flex flex-wrap gap-1.5 mb-4">
-                      {book.tags.slice(0, 4).map((tag) => (
+                    <div className="flex flex-wrap gap-1.5 mb-3">
+                      {book.tags.slice(0, 3).map((tag) => (
                         <LavenderBadge key={tag}>{tag}</LavenderBadge>
                       ))}
                     </div>
 
-                    <div className="mt-auto pt-4 border-t border-border/50 flex items-center gap-1.5 text-sm font-medium text-primary">
+                    <div className="mt-auto pt-3 border-t border-border/50 flex items-center gap-1.5 text-sm font-medium text-primary">
                       See notes
                       <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     </div>
-                  </CardContent>
+                  </div>
                 </Card>
               </Link>
             </motion.div>
