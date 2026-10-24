@@ -19,6 +19,7 @@ export const NAV_ITEMS = [
   { label: "Experience", href: "/experience" },
   { label: "Projects", href: "/projects" },
   { label: "Blog", href: "/blog" },
+  { label: "Books", href: "/books" },
   { label: "Contact", href: "/contact" }
 ];
 
