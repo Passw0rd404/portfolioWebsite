@@ -172,29 +172,105 @@ This chapter introduces the basic statistical ideas that turn noisy, ineffective
 - **Flap detection is a band-aid.** Flap detection silences a check that swings too often between "OK" and "alerting," but it only hides bad alerting rules instead of fixing the quality of the signal.
 - **Decouple collection from alerting.** Store raw metrics in a time-series database at regular intervals, and keep that separate from alert checking. Instead of judging only the latest datapoint, alerts should look at a window of historical metrics.
 
-### Mean and moving averages
+### Mean (average)
 
-- **Mean (average):** add up all the values in a set and divide by how many there are. It gives a quick summary of what a dataset looks like without examining every entry.
-- **Moving (rolling) average:** an average that is recalculated continuously as new datapoints arrive, always over the most recent window of data. Time-series databases use it to smooth out spiky graphs and show broader trends.
-- **The smoothing trade-off.** Smoothing hides temporary peaks and valleys. That makes patterns easier to see, but too much smoothing removes the extreme spikes that may point to a real operational problem. Finding the right smoothing interval is a balancing act.
+The mean is the sum of all the values divided by how many values there are.
+
+```
+mean = (v1 + v2 + ... + vn) / n
+```
+
+**Example:** five response times in milliseconds: 100, 120, 110, 130, 90.
+
+```
+sum  = 100 + 120 + 110 + 130 + 90 = 550
+mean = 550 / 5 = 110 ms
+```
+
+It gives a quick summary of what a dataset looks like without examining every entry.
+
+### Moving (rolling) average
+
+A moving average is the mean calculated over only the most recent N datapoints, and it is recalculated every time a new datapoint arrives. The window slides forward one step at a time. Time-series databases use it to smooth out spiky graphs and show broader trends.
+
+**Example:** CPU usage in percent: 20, 80, 25, 30, 90, 35, with a window of 3.
+
+```
+window 1: (20 + 80 + 25) / 3 = 41.7
+window 2: (80 + 25 + 30) / 3 = 45.0
+window 3: (25 + 30 + 90) / 3 = 48.3
+window 4: (30 + 90 + 35) / 3 = 51.7
+```
+
+The raw data jumps between 20 and 90, but the smoothed line stays between about 42 and 52.
+
+**The smoothing trade-off.** In the example above, the spikes to 80 and 90 almost disappeared. That makes patterns easier to see, but too much smoothing removes the extreme spikes that may point to a real operational problem. Finding the right smoothing interval is a balancing act.
 
 ### Median
 
-- **The middle value.** To find the median, sort the values from smallest to largest and take the one in the middle.
-- **Resistant to outliers.** One huge outlier (a single giant spike in response time, or one very high income in a group) drags the mean way up, but the median barely moves.
-- **When to use it.** The median is a far better representation than the mean for data with extreme outliers or heavy skew in one direction.
+The median is the middle value of a sorted dataset.
+
+```
+position of the middle value = (n + 1) / 2
+```
+
+**Example with an odd number of values:** 100, 120, 110, 130, 90.
+
+```
+sorted:   90, 100, 110, 120, 130
+position: (5 + 1) / 2 = 3rd value
+median:   110 ms
+```
+
+**Example with an even number of values:** 90, 100, 110, 120. There is no single middle value, so take the mean of the two middle ones.
+
+```
+median = (100 + 110) / 2 = 105 ms
+```
+
+**Why the median is resistant to outliers.** Take the first example again, but imagine the last request was a huge spike of 2000 ms instead of 130 ms: 100, 120, 110, 2000, 90.
+
+```
+mean   = (100 + 120 + 110 + 2000 + 90) / 5 = 2420 / 5 = 484 ms
+median = sorted: 90, 100, 110, 120, 2000 -> middle value = 110 ms
+```
+
+One outlier pushed the mean from 110 to 484, which does not describe any of the real requests, while the median did not move. The median is a far better representation than the mean for data with extreme outliers or heavy skew in one direction.
 
 ### Seasonality
 
-- **Predictable time patterns.** Seasonality means metrics that follow repeating cycles, like web traffic dropping overnight and peaking on weekday afternoons.
-- **Rolling historical baselines.** Instead of alerting against a fixed number, compare the current value with the same period in the past (1 hour ago, 1 day ago, 1 week ago). If traffic is normally 100 requests per second on a Tuesday afternoon, a drop to 20 is an anomaly worth investigating.
+Seasonality means metrics that follow repeating cycles over time, like web traffic dropping overnight and peaking on weekday afternoons.
+
+Instead of alerting against a fixed number, compare the current value with the same period in the past (1 hour ago, 1 day ago, 1 week ago).
+
+**Example:** traffic on a Tuesday afternoon is normally around 100 requests per second. A static threshold of "alert below 10" would stay silent while traffic falls to 20. Compared with the same time last week, a drop from 100 to 20 is an 80% fall, which is clearly an anomaly worth investigating.
 
 ### Percentiles
 
-- **Understanding what most users experience.** A percentile marks a point in a sorted dataset. The 95th percentile of latency means 95% of requests were at that speed or faster, so it drops the worst 5% as outliers and shows what the majority of users experience.
+A percentile marks a point in a sorted dataset. The Nth percentile is the value that N% of the datapoints are at or below.
+
+**Example:** ten request latencies in milliseconds, already sorted: 100, 110, 120, 130, 140, 150, 160, 170, 180, 2000.
+
+```
+90th percentile: 90% of 10 values = the 9th value = 180 ms
+maximum:         2000 ms
+mean:            3260 / 10 = 326 ms
+```
+
+The 90th percentile drops the worst 10% as outliers and shows what the majority of users experience (180 ms). The mean (326 ms) is dragged up by the single 2000 ms spike, and it describes nobody's real experience.
+
 - **Common uses.** Network bandwidth billing (95th percentile) and application latency reporting.
-- **Never average percentiles.** Percentiles throw away part of the dataset, so you cannot average daily percentiles to get a weekly percentile. The result is mathematically wrong. Always compute percentiles from the raw data.
-- **Track the max alongside percentiles.** Percentiles deliberately ignore extreme outliers, so always track the maximum latency too, to see the worst-case user experience.
+- **Track the max alongside percentiles.** Percentiles deliberately ignore extreme outliers, so always track the maximum latency too, to see the worst-case user experience. In the example, the max (2000 ms) shows the one very bad request that the 90th percentile hides.
+
+**Never average percentiles.** Percentiles throw away part of the dataset, so you cannot average daily percentiles to get a weekly percentile.
+
+**Example:** on Monday you served 1000 requests and the 95th percentile was 200 ms. On Tuesday you served only 10 requests and the 95th percentile was 900 ms. Averaging gives (200 + 900) / 2 = 550 ms. That number is wrong, because it treats 10 requests as equally important as 1000, and the real weekly percentile depends on all 1010 raw requests. Always compute percentiles from the raw data.
+
+### Standard deviation
+
+Standard deviation measures how spread out the datapoints are from the mean. In a normal distribution (a bell curve), about 68% of the data falls within 1 standard deviation of the mean, 95% within 2, and 99.7% within 3.
+
+Julian points out that it rarely works for IT operations. It assumes a normal distribution, but most system metrics are not normally distributed. They are heavily skewed, bounded (CPU is bounded between 0% and 100%, and latency is bounded at 0 on the low end but can be unbounded on the high end), or have multiple peaks. Using standard deviation on metrics like these leads to misleading alerts, unless you have verified that the data really follows a normal distribution.
 
 ## Chapter 5: Monitoring the Business
 

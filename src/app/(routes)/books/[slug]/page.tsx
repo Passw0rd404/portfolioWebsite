@@ -71,8 +71,8 @@ export default async function BookPage({ params }: Props) {
           </div>
 
           {book.cover && (
-            <div className="relative aspect-video mb-10 overflow-hidden rounded-xl border border-border/50">
-              <Image src={book.cover} alt={book.title} fill className="object-cover" priority />
+            <div className="relative aspect-[2/3] w-full max-w-xs mx-auto mb-10 overflow-hidden rounded-xl border border-border/50">
+              <Image src={book.cover} alt={book.title} fill className="object-cover" sizes="320px" priority />
             </div>
           )}
 

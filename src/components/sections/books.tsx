@@ -11,7 +11,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { LavenderBadge } from "@/components/ui/lavender-badge";
 import type { BookMeta } from "@/data/books";
 
-const PAGE_SIZE = 6;
+const PAGE_SIZE = 8;
 
 export function BooksSection({ books }: { books: BookMeta[] }) {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
@@ -40,7 +40,7 @@ export function BooksSection({ books }: { books: BookMeta[] }) {
           <p className="text-center text-muted-foreground">No books yet. Stay tuned!</p>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
           {visibleBooks.map((book, index) => (
             <motion.div
               key={book.slug}
@@ -52,14 +52,14 @@ export function BooksSection({ books }: { books: BookMeta[] }) {
             >
               <Link href={`/books/${book.slug}`} className="block h-full">
                 <Card className="group h-full flex flex-col overflow-hidden hover:shadow-xl transition-all duration-300 border-border/50 hover:border-primary/50">
-                  <div className="relative aspect-video overflow-hidden bg-gradient-to-br from-primary/10 via-accent/10 to-primary/10">
+                  <div className="relative aspect-[2/3] overflow-hidden bg-gradient-to-br from-primary/10 via-accent/10 to-primary/10">
                     {book.cover ? (
                       <Image
                         src={book.cover}
                         alt={book.title}
                         fill
                         className="object-cover transition-transform duration-300 group-hover:scale-105"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                       />
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center">
@@ -69,7 +69,7 @@ export function BooksSection({ books }: { books: BookMeta[] }) {
                   </div>
 
                   <CardHeader className="pb-3">
-                    <div className="flex items-center gap-4 text-xs text-muted-foreground mb-2">
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground mb-2">
                       <span className="flex items-center gap-1">
                         <Calendar className="h-3.5 w-3.5" />
                         {new Date(book.date).toLocaleDateString("en-US", {
@@ -90,7 +90,7 @@ export function BooksSection({ books }: { books: BookMeta[] }) {
                         </span>
                       )}
                     </div>
-                    <h3 className="text-xl font-bold line-clamp-2 group-hover:text-primary transition-colors">
+                    <h3 className="text-base md:text-lg font-bold line-clamp-2 group-hover:text-primary transition-colors">
                       {book.title}
                     </h3>
                     {book.author && (
