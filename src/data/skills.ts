@@ -16,7 +16,7 @@ export const skillsData: SkillCategory[] = [
     title: "Cloud",
     icon: "☁️",
     note: "EC2 · S3 · IAM · VPC · EKS · CloudFront · CodeDeploy",
-    skills: [{ name: "AWS", icon: "amazonwebservices/amazonwebservices-original-wordmark.svg" }]
+    skills: [{ name: "AWS", icon: "/images/skills/aws.svg" }]
   },
   {
     title: "Containers & Orchestration",

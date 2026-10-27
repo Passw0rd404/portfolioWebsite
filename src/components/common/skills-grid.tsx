@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Route, ScrollText, type LucideIcon } from "lucide-react";
+import { Cloud, Route, ScrollText, type LucideIcon } from "lucide-react";
 import { skillsData, type Skill } from "@/data/skills";
 
 const CDN = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons";
-const FALLBACK: Record<string, LucideIcon> = { Loki: ScrollText, Tempo: Route };
+const FALLBACK: Record<string, LucideIcon> = { AWS: Cloud, Loki: ScrollText, Tempo: Route };
 
 const iconUrl = (icon: string) =>
   icon.startsWith("/") ? `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}${icon}` : `${CDN}/${icon}`;
