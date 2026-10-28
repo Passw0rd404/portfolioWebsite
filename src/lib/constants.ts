@@ -10,7 +10,6 @@ export const SITE_CONFIG = {
     github: "https://github.com/Passw0rd404",
     linkedin: "https://linkedin.com/in/abdullah-sameh-0a3063366"
   }
-  }
 };
 
 export const NAV_ITEMS = [
