@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Briefcase, Github, Linkedin, Mail } from "lucide-react";
+import { Github, Linkedin, Mail, MessageSquare } from "lucide-react";
 import { SITE_CONFIG, NAV_ITEMS } from "@/lib/constants";
 
 export function Footer() {
@@ -55,9 +55,9 @@ export function Footer() {
               <a href={SITE_CONFIG.links.linkedin} target="_blank" rel="noopener noreferrer" className={link} aria-label="LinkedIn">
                 <Linkedin className="h-5 w-5" />
               </a>
-              <a href={SITE_CONFIG.links.upwork} target="_blank" rel="noopener noreferrer" className={link} aria-label="Upwork">
-                <Briefcase className="h-5 w-5" />
-              </a>
+              <Link href="/contact" className={link} aria-label="Contact me">
+                <MessageSquare className="h-5 w-5" />
+              </Link>
             </div>
           </div>
         </div>

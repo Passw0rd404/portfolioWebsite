@@ -13,13 +13,13 @@ export interface Experience {
 
 export const experienceData: Experience[] = [
   {
-    id: "upwork-freelance",
-    company: "Upwork",
+    id: "freelance",
+    company: "Freelance",
     role: "Freelance DevOps Engineer",
     duration: "Oct 2026 - Present",
     location: "Remote",
     description:
-      "Freelancing on Upwork and open to any DevOps or cloud job, from a quick pipeline fix to a full infrastructure build.",
+      "Open to any DevOps or cloud job, from a quick pipeline fix to a full infrastructure build.",
     achievements: [
       "Taking on DevOps and cloud infrastructure work end to end: design, automation, deployment, and monitoring",
       "Applying the same practices used in my own Kubernetes and AWS projects: infrastructure as code, GitOps, CI/CD, and observability"

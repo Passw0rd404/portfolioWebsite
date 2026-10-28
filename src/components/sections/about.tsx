@@ -1,6 +1,7 @@
 "use client";
 
 import { ProfileFrame } from "@/components/common/profile-frame";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { ANIMATION_VARIANTS } from "@/lib/constants";
 import { ScrollReveal, GradientText } from "@/components/animations";
@@ -55,7 +56,11 @@ export function About() {
             </p>
             <p className="text-lg leading-relaxed">
               I&apos;m open to internships and full-time roles (remote, hybrid, or on-site), and I
-              also take freelance work on Upwork.
+              also take freelance work. You can reach me through the{" "}
+              <Link href="/contact" className="text-primary underline underline-offset-4">
+                contact page
+              </Link>
+              .
             </p>
           </div>
 

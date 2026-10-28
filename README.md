@@ -164,4 +164,4 @@ The code is released under the [MIT License](LICENSE). The personal content (nam
 - Website: [abdullahsameh.tech](https://abdullahsameh.tech)
 - LinkedIn: [abdullah-sameh](https://linkedin.com/in/abdullah-sameh-0a3063366)
 - GitHub: [Passw0rd404](https://github.com/Passw0rd404)
-- Upwork: [Hire me on Upwork](https://www.upwork.com/freelancers/~014674126340988e86)
+- Contact: [abdullahsameh.tech/contact](https://abdullahsameh.tech/contact)

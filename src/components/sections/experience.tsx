@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Briefcase, Calendar, MapPin, Mail } from "lucide-react";
 import { experienceData, servicesData } from "@/data/experience";
-import { ANIMATION_VARIANTS, SITE_CONFIG } from "@/lib/constants";
+import { ANIMATION_VARIANTS } from "@/lib/constants";
 import { GradientText } from "@/components/animations";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -25,7 +25,7 @@ export function Experience() {
             Work <GradientText>Experience</GradientText>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Freelancing on Upwork and open to any DevOps or cloud job.
+            Open to any DevOps or cloud job: internships, full-time, or freelance.
           </p>
         </motion.div>
 
@@ -73,10 +73,10 @@ export function Experience() {
                 </div>
                 <div className="mt-6">
                   <Button asChild>
-                    <a href={SITE_CONFIG.links.upwork} target="_blank" rel="noopener noreferrer">
-                      <Briefcase className="mr-2 h-4 w-4" />
-                      View my Upwork profile
-                    </a>
+                    <Link href="/contact">
+                      <Mail className="mr-2 h-4 w-4" />
+                      Contact me
+                    </Link>
                   </Button>
                 </div>
               </CardContent>
@@ -127,12 +127,6 @@ export function Experience() {
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Button asChild>
-              <a href={SITE_CONFIG.links.upwork} target="_blank" rel="noopener noreferrer">
-                <Briefcase className="mr-2 h-4 w-4" />
-                Hire me on Upwork
-              </a>
-            </Button>
-            <Button asChild variant="outline">
               <Link href="/contact">
                 <Mail className="mr-2 h-4 w-4" />
                 Send a message

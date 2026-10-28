@@ -8,8 +8,8 @@ export const SITE_CONFIG = {
   links: {
     email: "abdullah.sameh40404@gmail.com",
     github: "https://github.com/Passw0rd404",
-    linkedin: "https://linkedin.com/in/abdullah-sameh-0a3063366",
-    upwork: "https://www.upwork.com/freelancers/~014674126340988e86"
+    linkedin: "https://linkedin.com/in/abdullah-sameh-0a3063366"
+  }
   }
 };
 

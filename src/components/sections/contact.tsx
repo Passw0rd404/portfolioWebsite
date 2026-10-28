@@ -3,7 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
 import {
-  Briefcase, CheckCircle2, FileText, Github, Linkedin, Loader2, Mail, MapPin, Send,
+  CheckCircle2, FileText, Github, Linkedin, Loader2, Mail, MapPin, Send,
 } from "lucide-react";
 import { ANIMATION_VARIANTS, SITE_CONFIG } from "@/lib/constants";
 import { GradientText } from "@/components/animations";
@@ -27,7 +27,6 @@ const channels = [
   { icon: Mail, label: "Email", value: SITE_CONFIG.links.email, href: `mailto:${SITE_CONFIG.links.email}` },
   { icon: Linkedin, label: "LinkedIn", value: "abdullah-sameh", href: SITE_CONFIG.links.linkedin },
   { icon: Github, label: "GitHub", value: "Passw0rd404", href: SITE_CONFIG.links.github },
-  { icon: Briefcase, label: "Upwork", value: "Hire me on Upwork", href: SITE_CONFIG.links.upwork },
   { icon: FileText, label: "Resume", value: "Download my CV (PDF)", href: `${base}/final.pdf` },
 ];
 
